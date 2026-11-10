@@ -13,21 +13,21 @@
 /* Fonts: Fixel Display / Fixel Text — MacPaw, SIL OFL 1.1 (public/fonts/OFL.txt); IBM Plex Mono — @fontsource, SIL OFL 1.1 (public/fonts/OFL-IBM-Plex-Mono.txt). */
 @font-face {
   font-family: "Fixel Display";
-  src: url("/fonts/FixelDisplay-Bold.woff2") format("woff2");
+  src: url("../fonts/FixelDisplay-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Fixel Text";
-  src: url("/fonts/FixelText-Regular.woff2") format("woff2");
+  src: url("../fonts/FixelText-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Fixel Text";
-  src: url("/fonts/FixelText-Medium.woff2") format("woff2");
+  src: url("../fonts/FixelText-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;

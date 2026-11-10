@@ -6,6 +6,7 @@ import "../styles/global.css";
 
 interface Props { lang: string; title: string; description: string; canonical?: string; }
 const { lang, title, description, canonical } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 ---
 <!doctype html>
 <html lang={lang}>
@@ -20,8 +21,8 @@ const { lang, title, description, canonical } = Astro.props;
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="uk_UA" />
     <meta name="robots" content="noindex" />
-    <link rel="preload" href="/fonts/FixelDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin data-rec="R-203" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={`${base}fonts/FixelDisplay-Bold.woff2`} as="font" type="font/woff2" crossorigin data-rec="R-203" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <slot name="head" />
   </head>
   <body id="top">
