@@ -1,0 +1,63 @@
+---
+import Icon from "./Icon.astro";
+import { faq, contacts } from "../data/site";
+// Native <details>: works without JS, keyboard and screen readers included. No template text (R-009, C-I012).
+---
+<section id="faq" class="faq" data-rec="R-009" aria-labelledby="faq-title">
+  <div class="container faq-layout">
+    <div class="faq-head">
+      <h2 id="faq-title">Питання</h2>
+      <p>Не знайшли відповіді? Майстер відповість телефоном.</p>
+      <a class="faq-phone mono" href={contacts.phoneHref}>{contacts.phoneFull}</a>
+    </div>
+    <div class="faq-list">
+      {faq.map((item) => (
+        <details class="faq-item">
+          <summary>
+            <h3>{item.q}</h3>
+            <Icon name="chevron" class="faq-chevron" />
+          </summary>
+          <div class="faq-answer">
+            {item.a.map((p) => <p>{p}</p>)}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq { padding-block: var(--space-section); }
+  .faq-layout { display: grid; gap: var(--space-xl); }
+  .faq-head { display: grid; gap: var(--space-s); align-content: start; justify-items: start; }
+  h2 { font-size: var(--text-section); }
+  .faq-head p { color: var(--color-muted); max-width: 22rem; }
+  .faq-phone { font-size: var(--text-head); text-decoration: none; white-space: nowrap; }
+  .faq-phone:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  .faq-item { border-top: var(--rule) solid var(--color-line); }
+  .faq-item:last-child { border-bottom: var(--rule) solid var(--color-line); }
+  summary {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-m);
+    min-height: var(--control-h); padding-block: var(--space-m); cursor: pointer; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  summary:active { color: var(--color-muted); }
+  h3 { font-size: var(--text-head); }
+  summary :global(.faq-chevron) { flex: none; transition: transform 200ms var(--ease-out); }
+  .faq-item[open] summary :global(.faq-chevron) { transform: rotate(180deg); }
+  .faq-answer { display: grid; gap: var(--space-s); padding-bottom: var(--space-l); max-width: 62ch; color: var(--color-muted); }
+  .faq-item[open] .faq-answer { animation: faq-in 200ms var(--ease-out) both; }
+  @keyframes faq-in { from { opacity: 0; } to { opacity: 1; } }
+
+  @media (min-width: 1024px) {
+    .faq-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--space-xl); }
+    .faq-head { position: sticky; top: calc(var(--header-h) + var(--space-l)); align-self: start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    summary :global(.faq-chevron) { transition: none; }
+    .faq-item[open] .faq-answer { animation: none; }
+  }
+</style>

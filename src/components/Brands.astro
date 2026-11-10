@@ -1,0 +1,36 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { brands, contacts, NOTE_FUTURE } from "../data/site";
+// C-007: brand pages exist on the current site; here each brand is a FutureLink. No brand logos.
+---
+<section id="brands" class="brands" aria-labelledby="brands-title">
+  <div class="container brands-layout">
+    <h2 id="brands-title">Ремонтуємо авто будь-якої марки</h2>
+    <div class="brands-body">
+      <ul class="brand-line" aria-label="Марки, з якими працюємо">
+        {brands.map((b, i) => (
+          <li><FutureLink note={NOTE_FUTURE} class="brand">{b}</FutureLink>{i < brands.length - 1 && <span class="comma" aria-hidden="true">,</span>}</li>
+        ))}
+      </ul>
+      <p class="brands-more">Іншої марки немає в списку? <a class="link" href={contacts.phoneHref}>Запитайте по телефону</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .brands { padding-block: var(--space-section); border-bottom: var(--rule) solid var(--color-line); }
+  .brands-layout { display: grid; gap: var(--space-xl); }
+  h2 { font-size: var(--text-section); max-width: 30rem; }
+  .brand-line { display: flex; flex-wrap: wrap; column-gap: 0.4em; row-gap: var(--space-2xs); font-family: var(--font-display); font-weight: 700; font-size: var(--text-section); line-height: 1.2; letter-spacing: var(--tracking-head); }
+  .brand-line li { display: inline-flex; align-items: baseline; }
+  .brand-line :global(.brand) { transition: color var(--dur-fast) var(--ease-out); }
+  .brand-line :global(.brand:hover) { color: var(--color-muted); }
+  .comma { color: var(--color-muted); }
+  .brands-more { margin-top: var(--space-l); font-size: var(--text-head); line-height: 1.4; color: var(--color-muted); }
+  .brands-more .link { color: var(--color-text); white-space: nowrap; }
+
+  @media (min-width: 1024px) {
+    .brands-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--space-xl); align-items: start; }
+    .brand-line { font-size: clamp(2.5rem, 1rem + 2.4vw, 3.5rem); }
+  }
+</style>

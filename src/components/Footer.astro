@@ -1,0 +1,66 @@
+---
+import Logo from "./Logo.astro";
+import FutureLink from "./FutureLink.astro";
+import { contacts, footerFuture, NOTE_FUTURE } from "../data/site";
+const year = new Date().getFullYear();
+const anchors = [
+  { href: "#services", label: "Послуги" },
+  { href: "#process", label: "Як ми працюємо" },
+  { href: "#brands", label: "Марки" },
+  { href: "#faq", label: "Питання" },
+  { href: "#contacts", label: "Контакти" },
+];
+---
+<footer class="site-footer" data-rec="R-009">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="#hero" class="footer-logo"><Logo height={44} /></a>
+      <p>Автосервіс повного циклу у Львові для авто будь-якої марки.</p>
+    </div>
+    <nav aria-label="Розділи сторінки">
+      <ul>
+        {anchors.map((a) => <li><a class="footer-link" href={a.href}>{a.label}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-label="Інші розділи сайту">
+      <ul>
+        {footerFuture.map((label) => <li><FutureLink note={NOTE_FUTURE} class="footer-link footer-link--future">{label}</FutureLink></li>)}
+      </ul>
+    </nav>
+    <div class="footer-contacts" data-rec="R-002">
+      <a class="mono footer-link" href={contacts.phoneHref}>{contacts.phoneFull}</a>
+      <a class="mono footer-link footer-email" href={`mailto:${contacts.email}`}>{contacts.email}</a>
+      <p>{contacts.street}, {contacts.city}</p>
+      <p><span class="mono">{contacts.hours[0].days} {contacts.hours[0].time}</span></p>
+      <p>Неділя — вихідний</p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© {year} {contacts.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: var(--rule-strong) solid var(--color-text); padding-top: var(--space-2xl); }
+  .footer-grid { display: grid; gap: var(--space-xl); }
+  .footer-logo { display: inline-block; }
+  .footer-brand { display: grid; gap: var(--space-s); align-content: start; }
+  .footer-brand p { color: var(--color-muted); max-width: 18rem; }
+  ul { display: grid; gap: var(--space-2xs); }
+  .footer-link, :global(.footer-link) { display: inline-flex; align-items: center; min-height: 36px; text-decoration: none; white-space: nowrap; }
+  a.footer-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+  a.footer-link:active { color: var(--color-muted); }
+  :global(.footer-link--future) { color: var(--color-muted); }
+  .footer-contacts { display: grid; gap: var(--space-2xs); align-content: start; justify-items: start; }
+  .footer-contacts p { color: var(--color-muted); }
+  .footer-contacts .mono { color: var(--color-text); }
+  .footer-email { white-space: nowrap; }
+  .footer-bottom { margin-top: var(--space-2xl); padding-block: var(--space-m); border-top: var(--rule) solid var(--color-line); font-size: var(--text-small); color: var(--color-muted); }
+
+  @media (min-width: 768px) {
+    .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .footer-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) minmax(0, 3fr) minmax(0, 4fr); column-gap: var(--space-l); }
+  }
+</style>

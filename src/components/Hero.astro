@@ -1,0 +1,100 @@
+---
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<section id="hero" class="hero" data-rec="R-001,R-101,R-013,R-201,R-202,R-402,R-410">
+  <div class="container">
+    <div class="hero-head">
+      <h1>Ремонт авто <span class="nowrap">будь-якої</span> марки у Львові</h1>
+      <p class="hero-lede">Діагностика, ремонт двигуна, ходової та електрики, технічне обслуговування. Попередній запис — за телефоном.</p>
+    </div>
+
+    <div class="hero-field" data-hero-field data-rec="R-001,R-002,R-313,R-401">
+      <a class="hero-call" href={contacts.phoneHref}>
+        <span class="hero-call-label"><Icon name="phone" size={22} />Подзвонити майстру</span>
+        <span class="hero-number mono"><span class="hero-cc">{contacts.phoneCountry}</span>{contacts.phoneLocal}</span>
+      </a>
+      <div class="hero-info">
+        <div class="hero-hours">
+          <p><span class="mono">{contacts.hours[0].days} {contacts.hours[0].time}</span></p>
+          <p>Неділя — вихідний</p>
+        </div>
+        <p class="hero-address">{contacts.street}, {contacts.city}</p>
+        <a class="btn btn--secondary hero-route" href={contacts.mapHref} target="_blank" rel="noopener">
+          <Icon name="route" size={20} />Маршрут
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--space-l) var(--space-l); }
+  .hero-head { display: grid; gap: var(--space-s); max-width: 60rem; }
+  .nowrap { white-space: nowrap; }
+  h1 { font-size: var(--text-hero); text-wrap: balance; }
+  .hero-lede { max-width: 40rem; color: var(--color-muted); font-size: var(--text-body); }
+
+  /* The brand field. Phone: the call block is one big yellow button; hours and address sit under it on paper. */
+  .hero-field { margin-top: var(--space-l); display: grid; isolation: isolate; }
+  .hero-call {
+    position: relative; display: grid; gap: var(--space-xs); align-content: center;
+    min-height: 112px; padding: var(--space-m) var(--space-s);
+    color: var(--color-accent-ink); text-decoration: none;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .hero-call::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: var(--color-accent); transform-origin: left center;
+    transition: background-color var(--dur-fast) var(--ease-out);
+    animation: field-fill 500ms var(--ease-out) 150ms both;
+  }
+  .hero-call:hover::before { background: var(--color-accent-hover); }
+  .hero-call:active { transform: translateY(1px); }
+  .hero-call-label { display: inline-flex; align-items: center; gap: var(--space-xs); font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-head); font-size: var(--text-head); line-height: 1.2; }
+  .hero-number { display: block; font-size: var(--text-signature); line-height: 1; white-space: nowrap; letter-spacing: -0.02em; }
+  .hero-cc { font-size: 0.42em; vertical-align: 0.9em; margin-right: 0.35em; }
+
+  .hero-info { display: grid; gap: var(--space-2xs); padding-top: var(--space-m); }
+  .hero-hours p:last-child, .hero-address { color: var(--color-muted); }
+  .hero-hours .mono { color: var(--color-text); }
+  .hero-route { margin-top: var(--space-s); width: 100%; }
+
+  @keyframes field-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  @media (min-width: 768px) {
+    .hero { padding-block: var(--space-2xl) var(--space-3xl); }
+    .hero-route { width: auto; justify-self: start; }
+    .hero-call { padding: var(--space-l); }
+  }
+
+  /* Desktop: the whole field is yellow; call on the left, hours/address/route on the right. */
+  @media (min-width: 1024px) {
+    .hero-head { gap: var(--space-m); }
+    .hero-field {
+      position: relative; margin-top: var(--space-xl);
+      grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    }
+    .hero-field::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: var(--color-accent); transform-origin: left center;
+      animation: field-fill 700ms var(--ease-out) 150ms both;
+    }
+    .hero-call { padding: var(--space-xl); }
+    .hero-cc { display: block; font-size: var(--text-head); vertical-align: baseline; margin: 0 0 var(--space-2xs); }
+    .hero-call::before { animation: none; background: transparent; }
+    .hero-call:hover::before { background: var(--color-accent-hover); }
+    .hero-info {
+      align-content: center; padding: var(--space-xl);
+      box-shadow: inset var(--rule) 0 0 var(--color-line);
+      color: var(--color-accent-ink);
+    }
+    .hero-hours p:last-child, .hero-address { color: var(--color-accent-ink); }
+    .hero-route { margin-top: var(--space-m); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-call::before, .hero-field::before { animation: none; }
+    .hero-call:active { transform: none; }
+  }
+</style>

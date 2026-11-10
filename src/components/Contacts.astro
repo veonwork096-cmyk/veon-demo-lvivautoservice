@@ -1,0 +1,139 @@
+---
+import Icon from "./Icon.astro";
+import { contacts, situationGroups } from "../data/site";
+const reasons = situationGroups.flatMap((g) => g.items.map((s) => s.title));
+// The form is visual only (demo rule §6, R-006 later): no action, the submit button is disabled, the phone sits next to it.
+---
+<section id="contacts" class="contacts" data-rec="R-002" aria-labelledby="contacts-title">
+  <div class="container contacts-layout">
+    <div class="where">
+      <h2 id="contacts-title">Як нас знайти</h2>
+      <p class="address">{contacts.streetShort}</p>
+      <p class="city">м. {contacts.city}</p>
+      <a class="btn btn--secondary route-btn" href={contacts.mapHref} target="_blank" rel="noopener"><Icon name="route" size={20} />Маршрут у Google Maps</a>
+
+      <dl class="info">
+        <div class="info-row">
+          <dt>Графік</dt>
+          <dd>
+            <table class="hours">
+              <tbody>
+                {contacts.hours.map((h) => (
+                  <tr><th scope="row">{h.days}</th><td class={h.time.includes(":") ? "mono" : undefined}>{h.time}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </dd>
+        </div>
+        <div class="info-row">
+          <dt>E-mail</dt>
+          <dd><a class="link mono email" href={`mailto:${contacts.email}`}>{contacts.email}</a></dd>
+        </div>
+        <div class="info-row" data-rec="R-005">
+          <dt>Запчастини</dt>
+          <dd>Підбір і замовлення — за телефоном</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="book">
+      <a class="book-call" href={contacts.phoneHref}>
+        <span class="book-call-label"><Icon name="phone" size={22} />Записатися на ремонт</span>
+        <span class="book-number mono">{contacts.phoneFull}</span>
+      </a>
+
+      <form class="request" aria-labelledby="request-title" data-request-form novalidate>
+        <h3 id="request-title">Онлайн-заявка</h3>
+        <div class="field">
+          <label for="f-name">Ім’я</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="f-phone">Телефон</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+        </div>
+        <div class="field">
+          <label for="f-car">Марка і модель</label>
+          <input id="f-car" name="car" type="text" />
+        </div>
+        <div class="field">
+          <label for="f-reason">Що сталося</label>
+          <select id="f-reason" name="reason">
+            <option value="">Оберіть ситуацію</option>
+            {reasons.map((r) => <option>{r}</option>)}
+            <option>Інше</option>
+          </select>
+        </div>
+        <div class="request-actions">
+          <button class="btn btn--primary" type="submit" disabled aria-describedby="request-note">Надіслати заявку</button>
+          <p id="request-note" class="request-note">Онлайн-заявка з’явиться в повній версії сайту</p>
+          <p class="request-phone">Або зателефонуйте: <a class="mono" href={contacts.phoneHref}>{contacts.phoneFull}</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacts { padding-block: var(--space-section); background: var(--color-concrete); }
+  .contacts-layout { display: grid; gap: var(--space-2xl); }
+  .where { display: grid; justify-items: start; align-content: start; }
+  h2 { font-size: var(--text-section); margin-bottom: var(--space-l); }
+  .address {
+    font-family: var(--font-display); font-weight: 700; font-size: var(--text-hero);
+    line-height: var(--leading-tight); letter-spacing: var(--tracking-head);
+    overflow-wrap: break-word; min-width: 0;
+  }
+  .city { margin-top: var(--space-xs); font-size: var(--text-head); color: var(--color-muted); }
+  .route-btn { margin-top: var(--space-l); }
+
+  .info { margin: var(--space-xl) 0 0; display: grid; width: 100%; }
+  .info-row { display: grid; gap: var(--space-2xs); padding-block: var(--space-s); border-top: var(--rule) solid var(--color-line); }
+  .info-row:last-child { border-bottom: var(--rule) solid var(--color-line); }
+  dt { font-size: var(--text-small); color: var(--color-muted); }
+  dd { margin: 0; }
+  .hours { border-collapse: collapse; }
+  .hours th { text-align: left; font-weight: 500; padding: 0 var(--space-m) 0 0; }
+  .hours td { padding: 0; }
+  .email { overflow-wrap: anywhere; }
+
+
+  .book { display: grid; gap: var(--space-l); align-content: start; }
+  .book-call {
+    display: grid; gap: var(--space-xs); padding: var(--space-m);
+    background: var(--color-accent); color: var(--color-accent-ink); text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .book-call:hover { background: var(--color-accent-hover); }
+  .book-call:active { transform: translateY(1px); }
+  .book-call-label { display: inline-flex; align-items: center; gap: var(--space-xs); font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-head); font-size: var(--text-head); line-height: 1.2; }
+  .book-number { font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem); line-height: 1.1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .request { display: grid; gap: var(--space-m); padding: var(--space-l) var(--space-m); background: var(--color-bg); }
+  .request h3 { font-size: var(--text-head); }
+  .field { display: grid; gap: var(--space-xs); }
+  label { font-size: var(--text-small); font-weight: 500; }
+  input, select {
+    width: 100%; min-height: var(--control-h); padding: 0 var(--space-s);
+    border: var(--rule) solid var(--color-field-border); border-radius: var(--radius);
+    background: var(--color-bg); color: var(--color-text);
+  }
+  input:hover, select:hover { border-color: var(--color-text); }
+  input:focus-visible, select:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  input:disabled, select:disabled { background: var(--color-concrete); color: var(--color-muted); }
+  .request-actions { display: grid; gap: var(--space-s); padding-top: var(--space-xs); }
+  .request-actions .btn { justify-self: start; }
+  .request-note { font-size: var(--text-small); color: var(--color-muted); }
+  .request-phone { font-family: var(--font-display); font-size: var(--text-head); font-weight: 700; letter-spacing: var(--tracking-head); line-height: 1.35; }
+  .request-phone a { white-space: nowrap; text-decoration: underline; text-underline-offset: 4px; }
+
+  @media (min-width: 768px) {
+    .book-call, .request { padding: var(--space-l); }
+  }
+  @media (min-width: 1024px) {
+    .contacts-layout { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); column-gap: var(--space-3xl); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .book-call:active { transform: none; }
+  }
+</style>

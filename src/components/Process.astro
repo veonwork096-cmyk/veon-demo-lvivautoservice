@@ -1,0 +1,83 @@
+---
+import Icon from "./Icon.astro";
+import { steps, contacts } from "../data/site";
+// The only scroll reveal on the page: the yellow route line draws, stops appear one by one (concept 8.9 #3).
+---
+<section id="process" class="process" data-rec="R-016" aria-labelledby="process-title">
+  <div class="container">
+    <div class="proc-head">
+      <h2 id="process-title">Як проходить візит</h2>
+      <p>Чотири кроки від дзвінка до видачі авто.</p>
+    </div>
+
+    <ol class="route" data-reveal>
+      {steps.map((s, i) => (
+        <li class="stop" style={`--i:${i}`}>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="proc-foot">
+      <p class="proc-note">Попередній запис обов’язковий.</p>
+      <a class="btn btn--primary" href={contacts.phoneHref}><Icon name="phone" size={20} />Подзвонити</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process { padding-block: var(--space-section); }
+  .proc-head { display: grid; gap: var(--space-s); max-width: 34rem; margin-bottom: var(--space-xl); }
+  h2 { font-size: var(--text-section); }
+  .proc-head p { color: var(--color-muted); }
+
+  /* Phone: vertical line on the left. */
+  .route { position: relative; display: grid; gap: var(--space-l); padding-left: var(--space-l); }
+  .route::before {
+    content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px; width: var(--rule-route);
+    background: var(--color-accent); transform-origin: top;
+    transition: transform 600ms var(--ease-out);
+  }
+  .stop { position: relative; display: grid; align-content: start; gap: var(--space-xs); max-width: 30rem; }
+  .stop::before {
+    content: ""; position: absolute; left: calc(-1 * var(--space-l)); top: 6px;
+    width: 16px; height: 16px; background: var(--color-text);
+  }
+  h3 { font-size: var(--text-head); }
+  .stop p { color: var(--color-muted); }
+
+  .proc-foot {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s) var(--space-m);
+    margin-top: var(--space-xl); padding-top: var(--space-m);
+    border-top: var(--rule) solid var(--color-line);
+  }
+  .proc-note { font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-head); font-size: var(--text-head); line-height: 1.3; }
+
+  /* The reveal: the route block itself does not move; the line draws and the stops fade in. */
+  :global(.js) .route[data-reveal]:not(.is-visible) { opacity: 1; transform: none; }
+  :global(.js) .route:not(.is-visible)::before { transform: scaleY(0); }
+  :global(.js) .route .stop { transition: opacity 400ms var(--ease-out); transition-delay: calc(200ms + var(--i) * 120ms); }
+  :global(.js) .route:not(.is-visible) .stop { opacity: 0; }
+
+  @media (min-width: 1024px) {
+    .proc-head { margin-bottom: var(--space-2xl); }
+    .route {
+      grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-l);
+      padding-left: 0; padding-top: var(--space-xl);
+    }
+    .route::before {
+      left: 0; right: 0; top: 6px; bottom: auto; width: auto; height: var(--rule-route);
+      transform-origin: left; transition-duration: 900ms;
+    }
+    :global(.js) .route:not(.is-visible)::before { transform: scaleX(0); }
+    .stop::before { left: 0; top: calc(-1 * var(--space-xl)); }
+    .proc-foot { margin-top: var(--space-2xl); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .route:not(.is-visible)::before { transform: none; }
+    :global(.js) .route:not(.is-visible) .stop { opacity: 1; }
+    .route::before, :global(.js) .route .stop { transition: none; }
+  }
+</style>

@@ -1,0 +1,137 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import { contacts, nav, navFuture, NOTE_FUTURE } from "../data/site";
+---
+<header class="site-header" data-header>
+  <div class="container header-row">
+    <a class="header-logo" href="#hero"><Logo height={44} eager /></a>
+
+    <nav class="header-nav" aria-label="Головне меню">
+      <ul>
+        {nav.map((item) => <li><a class="nav-link" href={item.href}>{item.label}</a></li>)}
+        {navFuture.map((item) => (
+          <li data-rec={"rec" in item ? item.rec : undefined}><FutureLink note={NOTE_FUTURE} class="nav-link nav-link--future">{item.label}</FutureLink></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="header-phone mono" href={contacts.phoneHref} data-rec="R-002">{contacts.phoneFull}</a>
+      <a class="btn btn--primary header-call" href={contacts.phoneHref} data-header-call>
+        <Icon name="phone" size={20} />Подзвонити
+      </a>
+      <a class="icon-btn header-call-icon" href={contacts.phoneHref} aria-label="Подзвонити">
+        <Icon name="phone" />
+      </a>
+      <details class="menu" data-menu>
+        <summary class="icon-btn" aria-label="Меню">
+          <Icon name="menu" class="menu-icon-open" />
+          <Icon name="close" class="menu-icon-close" />
+        </summary>
+        <div class="menu-panel">
+          <nav aria-label="Меню" class="container menu-nav">
+            <ul>
+              {nav.map((item) => <li><a class="menu-link" href={item.href}>{item.label}</a></li>)}
+              <li><a class="menu-link" href="#faq">Питання</a></li>
+              {navFuture.map((item) => (
+                <li data-rec={"rec" in item ? item.rec : undefined}><FutureLink note={NOTE_FUTURE} class="menu-link menu-link--future">{item.label}</FutureLink></li>
+              ))}
+            </ul>
+            <div class="menu-contacts">
+              <a class="btn btn--primary menu-call" href={contacts.phoneHref}><Icon name="phone" size={20} />Подзвонити</a>
+              <p><a class="mono menu-phone" href={contacts.phoneHref}>{contacts.phoneFull}</a></p>
+              <p>{contacts.street}, {contacts.city}</p>
+              <p><span class="mono">{contacts.hours[0].days} {contacts.hours[0].time}</span></p>
+              <p>Неділя — вихідний</p>
+              <a class="link" href={contacts.mapHref} target="_blank" rel="noopener">Маршрут у Google Maps</a>
+            </div>
+          </nav>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: var(--color-bg);
+    box-shadow: inset 0 calc(-1 * var(--rule)) 0 var(--color-line);
+    transition: box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .site-header.is-past { box-shadow: inset 0 calc(-1 * var(--rule-strong)) 0 var(--color-text); }
+  .header-row {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-m);
+    min-height: var(--header-h);
+  }
+  .header-logo { display: block; flex: none; }
+  .header-logo :global(img) { width: auto; height: 40px; }
+
+  .header-nav, .header-phone, .header-call { display: none; }
+  .header-actions { display: flex; align-items: center; gap: var(--space-xs); }
+
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: var(--touch); height: var(--touch);
+    border: var(--rule-strong) solid var(--color-text); background: var(--color-bg); color: var(--color-text);
+    cursor: pointer; list-style: none;
+    transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .icon-btn::-webkit-details-marker { display: none; }
+  .icon-btn:hover { background: var(--color-concrete); }
+  .icon-btn:active { transform: translateY(1px); }
+  /* Outlined while the hero field (the one yellow call) is on screen; filled once it has scrolled away. */
+  .is-past .header-call-icon { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+  .is-past .header-call-icon:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); }
+
+  .menu :global(.menu-icon-close) { display: none; }
+  .menu[open] :global(.menu-icon-open) { display: none; }
+  .menu[open] :global(.menu-icon-close) { display: block; }
+  .menu-panel {
+    position: fixed; inset: var(--header-h) 0 0 0; z-index: var(--z-menu);
+    background: var(--color-bg); overflow-y: auto;
+    box-shadow: inset 0 var(--rule-strong) 0 var(--color-text);
+    padding-block: var(--space-m) var(--space-xl);
+  }
+  .menu-nav ul { display: grid; }
+  .menu-link, :global(.menu-link) {
+    display: flex; align-items: center; min-height: var(--control-h);
+    font-family: var(--font-display); font-weight: 700; font-size: var(--text-head);
+    letter-spacing: var(--tracking-head); text-decoration: none; white-space: nowrap;
+    border-bottom: var(--rule) solid var(--color-line);
+  }
+  .menu-link:active { color: var(--color-muted); }
+  :global(.menu-link--future) { color: var(--color-muted); width: 100%; min-height: var(--control-h); }
+  .menu-contacts { display: grid; gap: var(--space-xs); margin-top: var(--space-l); color: var(--color-muted); }
+  .menu-contacts .btn { justify-self: start; margin-bottom: var(--space-xs); }
+  .menu-phone { color: var(--color-text); font-size: var(--text-head); text-decoration: none; white-space: nowrap; }
+  .menu-contacts .link { white-space: nowrap; }
+
+  @media (min-width: 1280px) {
+    .header-logo :global(img) { height: 44px; }
+    .header-nav { display: block; margin-inline: auto; }
+    .header-nav ul { display: flex; align-items: center; gap: var(--space-m); }
+    .nav-link, :global(.nav-link) {
+      position: relative; display: inline-flex; align-items: center; min-height: var(--touch);
+      font-size: var(--text-body); font-weight: 500; text-decoration: none; white-space: nowrap;
+    }
+    a.nav-link::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: var(--rule-strong);
+      background: var(--color-text); transform: scaleX(0); transform-origin: left;
+      transition: transform var(--dur-fast) var(--ease-out);
+    }
+    a.nav-link:hover::after { transform: scaleX(1); }
+    a.nav-link:active { color: var(--color-muted); }
+    :global(.nav-link--future) { color: var(--color-muted); }
+    .header-phone { display: inline-flex; align-items: center; min-height: var(--touch); text-decoration: none; white-space: nowrap; }
+    .header-phone:hover { text-decoration: underline; text-underline-offset: 4px; }
+    .header-call { display: inline-flex; min-height: var(--touch); }
+    .header-actions { gap: var(--space-m); }
+    .header-call-icon, .menu { display: none; }
+    :global(.js) .header-call:not(.is-shown) { opacity: 0; visibility: hidden; }
+    .header-call { transition: opacity 280ms var(--ease-out), visibility 0s linear 0s, background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+    :global(.js) .header-call:not(.is-shown) { transition: opacity 280ms var(--ease-out), visibility 0s linear 280ms; }
+  }
+</style>

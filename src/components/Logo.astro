@@ -1,0 +1,19 @@
+---
+// Client logo (logo.png from the client's site, 198×67), served locally as AVIF/WebP with fixed size (R-201, R-013).
+import { Picture } from "astro:assets";
+import logo from "../assets/logo.png";
+interface Props { height?: number; eager?: boolean; }
+const { height = 44, eager = false } = Astro.props;
+const width = Math.round((198 / 67) * height);
+---
+<Picture
+  src={logo}
+  alt="Львів Автосервіс"
+  width={width}
+  height={height}
+  densities={[1, 198 / width]}
+  formats={["avif", "webp"]}
+  loading={eager ? "eager" : "lazy"}
+  decoding="async"
+  class="logo-img"
+/>

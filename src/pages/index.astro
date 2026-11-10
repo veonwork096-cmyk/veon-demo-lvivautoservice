@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Situations from "../components/Situations.astro";
+import Services from "../components/Services.astro";
+import Process from "../components/Process.astro";
+import Garage from "../components/Garage.astro";
+import Brands from "../components/Brands.astro";
+import Faq from "../components/Faq.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import CallBar from "../components/CallBar.astro";
+import { contacts } from "../data/site";
+
+// R-103: AutoRepair with one address, phone and hours. No rating, no sameAs (not verified).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  name: contacts.name,
+  telephone: "+380680344791",
+  email: contacts.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: contacts.street,
+    addressLocality: contacts.city,
+    addressCountry: "UA",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "10:00",
+      closes: "19:00",
+    },
+  ],
+};
+---
+<Base
+  lang="uk"
+  title="СТО у Львові: ремонт і діагностика авто — Львів Автосервіс"
+  description="Діагностика, ремонт ходової, двигуна, електрики і ТО для авто будь-якої марки. вул. Кульпарківська, 230. Пн–Сб 10:00–19:00. Запис за телефоном."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} data-rec="R-103" />
+  <Header slot="header" />
+  <Hero />
+  <Situations />
+  <Services />
+  <Process />
+  <Garage />
+  <Brands />
+  <Faq />
+  <Contacts />
+  <Footer slot="footer" />
+  <CallBar slot="footer" />
+</Base>
+
+<script src="../scripts/page.ts"></script>
+
+<style is:global>
+  /* Room for the phone bottom bar so it never covers the footer (R-012). */
+  @media (max-width: 1023.98px) {
+    body { padding-bottom: calc(var(--control-h) + env(safe-area-inset-bottom)); }
+  }
+</style>

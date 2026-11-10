@@ -1,0 +1,87 @@
+---
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import { serviceGroups, contacts, NOTE_FUTURE } from "../data/site";
+// Groups are <details open>: content is there without JS; on the phone the script folds them (R-004).
+---
+<section id="services" class="services" data-rec="R-004" aria-labelledby="services-title">
+  <div class="container svc-layout">
+    <div class="svc-head">
+      <h2 id="services-title">Усі послуги</h2>
+      <p>Повний перелік робіт сервісу, згрупований за вузлами авто.</p>
+    </div>
+
+    <div class="svc-groups">
+      {serviceGroups.map((group) => (
+        <details class="svc-group" open data-svc-group>
+          <summary class="svc-summary">
+            <h3>{group.title}</h3>
+            <Icon name="chevron" class="svc-chevron" />
+          </summary>
+          <ul class="svc-list">
+            {group.items.map((item) => <li><FutureLink note={NOTE_FUTURE} class="svc-item">{item}</FutureLink></li>)}
+          </ul>
+        </details>
+      ))}
+    </div>
+
+    <aside class="svc-aside" aria-label="Не знайшли свою роботу">
+      <p class="svc-aside-title">Не знайшли свою роботу?</p>
+      <p class="svc-aside-text">Зателефонуйте майстру: підкаже, чи візьмемо її в роботу.</p>
+      <a class="svc-aside-phone mono" href={contacts.phoneHref}>{contacts.phoneFull}</a>
+      <a class="btn btn--primary" href={contacts.phoneHref}><Icon name="phone" size={20} />Подзвонити</a>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .services { background: var(--color-concrete); padding-block: var(--space-section); }
+  .svc-layout { display: grid; gap: var(--space-xl); }
+  .svc-head { display: grid; gap: var(--space-s); max-width: 34rem; }
+  h2 { font-size: var(--text-section); }
+  .svc-head p { color: var(--color-muted); }
+
+  .svc-group { border-top: var(--rule) solid var(--color-line); }
+  .svc-group:last-child { border-bottom: var(--rule) solid var(--color-line); }
+  .svc-summary {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-s);
+    min-height: var(--control-h); cursor: pointer; list-style: none;
+  }
+  .svc-summary::-webkit-details-marker { display: none; }
+  .svc-summary:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  .svc-summary:active { color: var(--color-muted); }
+  h3 { font-size: var(--text-head); }
+  .svc-summary :global(.svc-chevron) { flex: none; transition: transform 200ms var(--ease-out); }
+  .svc-group[open] .svc-summary :global(.svc-chevron) { transform: rotate(180deg); }
+  .svc-list { display: grid; gap: var(--space-xs); padding-bottom: var(--space-m); }
+  .svc-list :global(.svc-item) { font-size: var(--text-body); line-height: 1.4; }
+
+  .svc-aside { display: grid; gap: var(--space-s); justify-items: start; padding-top: var(--space-m); border-top: var(--rule-strong) solid var(--color-text); }
+  .svc-aside-title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-head); letter-spacing: var(--tracking-head); line-height: 1.2; }
+  .svc-aside-text { color: var(--color-muted); }
+  .svc-aside-phone { font-size: var(--text-head); text-decoration: none; white-space: nowrap; }
+  .svc-aside-phone:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  @media (min-width: 768px) {
+    .svc-groups { columns: 2; column-gap: var(--space-xl); }
+    .svc-group { break-inside: avoid; border-bottom: 0; }
+    .svc-group:last-child { border-bottom: 0; }
+    .svc-summary { cursor: default; pointer-events: none; min-height: auto; padding-block: var(--space-s) var(--space-xs); }
+    .svc-summary :global(.svc-chevron) { display: none; }
+    .svc-list { padding-bottom: var(--space-l); }
+  }
+
+  @media (min-width: 1024px) {
+    .svc-layout {
+      grid-template-columns: minmax(0, 9fr) minmax(0, 3fr);
+      column-gap: var(--space-xl); row-gap: var(--space-2xl);
+    }
+    .svc-head { grid-column: 1 / -1; }
+    .svc-groups { columns: 3; }
+    .svc-aside { position: sticky; top: calc(var(--header-h) + var(--space-l)); align-self: start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-summary :global(.svc-chevron) { transition: none; }
+  }
+</style>

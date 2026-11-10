@@ -1,0 +1,12 @@
+---
+// Line icons, 2px stroke, currentColor. Decorative: always aria-hidden (the control carries the label).
+interface Props { name: "phone" | "chevron" | "menu" | "close" | "route"; size?: number; class?: string; }
+const { name, size = 24, class: cls } = Astro.props;
+---
+<svg class={cls} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false">
+  {name === "phone" && <path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2Z" />}
+  {name === "chevron" && <path d="m6 9 6 6 6-6" />}
+  {name === "menu" && <path d="M3 7h18M3 12h18M3 17h18" />}
+  {name === "close" && <path d="M5 5l14 14M19 5 5 19" />}
+  {name === "route" && <path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />}
+</svg>

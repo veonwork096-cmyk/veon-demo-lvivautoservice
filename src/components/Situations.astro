@@ -1,0 +1,119 @@
+---
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import { situationGroups, contacts, NOTE_FUTURE } from "../data/site";
+// Without JS every panel is open under its row. With JS: desktop — list left, one panel right; phone — accordion.
+---
+<section id="situations" class="situations" data-rec="R-004" aria-labelledby="situations-title">
+  <div class="container">
+    <div class="sit-head">
+      <h2 id="situations-title">З чим ви приїхали?</h2>
+      <p>Оберіть, що відбувається з машиною, і подивіться, які роботи для цього робимо.</p>
+    </div>
+
+    <div class="sit-index" data-situations>
+      {situationGroups.map((group, g) => (
+        <div class="sit-group">
+          <h3 class="sit-group-title" style={`--row:${g === 0 ? 1 : 5}`}>{group.title}</h3>
+          {group.items.map((s, i) => (
+            <div class="sit">
+              <h4 class="sit-title" style={`--row:${(g === 0 ? 2 : 6) + i}`}>
+                <button type="button" class="sit-toggle" id={`${s.id}-btn`} aria-expanded="true" aria-controls={`${s.id}-panel`} data-sit-toggle>
+                  <span>{s.title}</span>
+                  <Icon name="chevron" class="sit-chevron" />
+                </button>
+              </h4>
+              <div class="sit-panel" id={`${s.id}-panel`} role="region" aria-labelledby={`${s.id}-btn`} data-sit-panel>
+                <p class="sit-panel-lead">Що робимо в цій ситуації</p>
+                <ul class="sit-works">
+                  {s.works.map((w) => <li><FutureLink note={NOTE_FUTURE} class="sit-work">{w}</FutureLink></li>)}
+                </ul>
+                <p class="sit-price">Вартість назве майстер після діагностики</p>
+                <a class="btn btn--primary sit-call" href={contacts.phoneHref}><Icon name="phone" size={20} />Подзвонити</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .situations { padding-block: var(--space-xl) var(--space-section); }
+  .sit-head { display: grid; gap: var(--space-s); max-width: 34rem; margin-bottom: var(--space-xl); }
+  h2 { font-size: var(--text-section); }
+  .sit-head p { color: var(--color-muted); }
+
+  .sit-group + .sit-group { margin-top: var(--space-xl); }
+  .sit-group-title {
+    font-family: var(--font-body); font-weight: 500; font-size: var(--text-small);
+    letter-spacing: 0; color: var(--color-muted); line-height: 1.3;
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--rule-strong) solid var(--color-text);
+  }
+  .sit-title { font-size: var(--text-index); }
+  .sit-toggle {
+    position: relative; display: flex; width: 100%; align-items: center; justify-content: space-between; gap: var(--space-s);
+    min-height: var(--touch); padding: var(--space-s) 0;
+    background: none; border: 0; border-bottom: var(--rule) solid var(--color-line);
+    font: inherit; letter-spacing: inherit; line-height: inherit; text-align: left; color: var(--color-text);
+    cursor: pointer;
+  }
+  .sit-toggle::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: calc(-1 * var(--rule));
+    height: var(--rule-route); background: var(--color-accent);
+    transform: scaleX(0); transform-origin: left; transition: transform 200ms var(--ease-out);
+  }
+  .sit-toggle:hover span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .sit-toggle:active { color: var(--color-muted); }
+  .sit-toggle :global(.sit-chevron) { flex: none; display: none; transition: transform 200ms var(--ease-out); }
+
+  .sit-panel { display: grid; gap: var(--space-s); padding: var(--space-m) 0 var(--space-l); }
+  .sit-panel-lead { font-size: var(--text-small); color: var(--color-muted); }
+  .sit-works { display: grid; gap: var(--space-xs); }
+  .sit-works :global(.sit-work) { font-size: var(--text-body); font-weight: 500; min-height: 32px; }
+  .sit-price { color: var(--color-muted); }
+  .sit-call { justify-self: start; }
+
+  /* With JS: accordion on the phone. */
+  :global(.js) .sit-toggle :global(.sit-chevron) { display: block; }
+  :global(.js) .sit-toggle[aria-expanded="true"] :global(.sit-chevron) { transform: rotate(180deg); }
+  :global(.js) .sit-toggle[aria-expanded="true"]::after { transform: scaleX(1); }
+  :global(.js) .sit-panel:not([hidden]) { animation: panel-in 200ms var(--ease-out) both; }
+  .sit-panel[hidden] { display: none; }
+
+  @keyframes panel-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes panel-in-desk { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  @media (min-width: 1024px) {
+    .situations { padding-top: var(--space-2xl); }
+    .sit-head { margin-bottom: var(--space-2xl); }
+    /* Desktop with JS: list in columns 1–7, the chosen situation's panel in 8–12. */
+    :global(.js) .sit-index {
+      display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: repeat(8, auto); column-gap: var(--space-3xl); align-items: start;
+    }
+    :global(.js) .sit-group, :global(.js) .sit { display: contents; }
+    :global(.js) .sit-group-title, :global(.js) .sit-title { grid-column: 1; grid-row: var(--row); }
+    :global(.js) .sit-group-title { margin-top: var(--space-xl); }
+    :global(.js) .sit-group:first-child .sit-group-title { margin-top: 0; }
+    :global(.js) .sit-panel {
+      grid-column: 2; grid-row: 1 / span 8; align-self: start;
+      position: sticky; top: calc(var(--header-h) + var(--space-l));
+      padding: var(--space-xl); background: var(--color-concrete);
+    }
+    :global(.js) .sit-panel:not([hidden]) { animation: panel-in-desk var(--dur-panel) var(--ease-out) both; }
+    :global(.js) .sit-toggle :global(.sit-chevron) { display: none; }
+    :global(.js) .sit-toggle[aria-expanded="true"] { color: var(--color-text); }
+    :global(.js) .sit-toggle[aria-expanded="false"] { color: var(--color-muted); }
+    :global(.js) .sit-toggle[aria-expanded="false"]:hover { color: var(--color-text); }
+    .sit-works :global(.sit-work) { font-size: var(--text-head); font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-head); line-height: 1.25; }
+    .sit-works { gap: var(--space-s); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .sit-panel:not([hidden]) { animation: none; }
+    .sit-toggle::after, .sit-toggle :global(.sit-chevron) { transition: none; }
+  }
+</style>

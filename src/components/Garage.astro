@@ -1,0 +1,59 @@
+---
+import { garageFacts } from "../data/site";
+// The one dark band of the page (concept 8.2 #5). Facts only (C-004, R-011); no warranty term (R-008 — client decision).
+---
+<section id="garage" class="garage" data-rec="R-011" aria-labelledby="garage-title">
+  <div class="container garage-layout">
+    <div class="garage-text">
+      <h2 id="garage-title">Умови на СТО</h2>
+      <ul class="facts">
+        {garageFacts.map((f) => (
+          <li>
+            <p class="fact-big">{f.big}</p>
+            <p class="fact-small">{f.small}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <figure class="slot" data-slot="garage-photo">
+      <div class="slot-box" role="img" aria-label="Місце для фото боксів і підйомників сервісу">
+        <p class="slot-title">Бокси і підйомники</p>
+        <p class="slot-note">зображення клієнта</p>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .garage {
+    --color-focus: var(--color-focus-on-dark);
+    background: var(--color-dark); color: var(--color-on-dark);
+    padding-block: var(--space-section);
+  }
+  .garage-layout { display: grid; gap: var(--space-xl); }
+  h2 { font-size: var(--text-section); margin-bottom: var(--space-xl); }
+  .facts { display: grid; }
+  .facts li { padding-block: var(--space-m); border-top: var(--rule) solid var(--color-line-on-dark); display: grid; gap: var(--space-2xs); }
+  .facts li:last-child { border-bottom: var(--rule) solid var(--color-line-on-dark); }
+  .fact-big {
+    font-family: var(--font-display); font-weight: 700; font-size: var(--text-section);
+    line-height: var(--leading-tight); letter-spacing: var(--tracking-head);
+    overflow-wrap: break-word; min-width: 0;
+  }
+  .fact-small { color: var(--color-on-dark-muted); }
+
+  .slot { margin: 0; }
+  .slot-box {
+    display: grid; align-content: end; gap: var(--space-2xs);
+    aspect-ratio: 16 / 9; padding: var(--space-m);
+    background: transparent; color: var(--color-on-dark);
+    border: var(--rule) solid var(--color-line-on-dark);
+  }
+  .slot-title { font-weight: 500; }
+  .slot-note { font-size: var(--text-small); color: var(--color-on-dark-muted); }
+
+  @media (min-width: 1024px) {
+    .garage-layout { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); column-gap: var(--space-3xl); align-items: center; }
+  }
+</style>

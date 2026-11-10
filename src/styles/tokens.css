@@ -1,0 +1,104 @@
+/* Hallmark · shape: stacked tiers — headline over a full-width brand field, then index, dense catalog, route line, dark facts band, brand line, two-column questions, contacts · genre: modern-minimal · theme: custom · job: book · idea: "мовою водія — від симптому до номера майстра на фірмовому жовтому" · vibe: "чесна майстерня, інженерна точність, світло"
+ * paper: #FFFFFF · accent: #FEDE00 · display: Fixel Display · body: Fixel Text · hero: H1 зверху, жовте поле з номером, графіком і адресою · nav: logo left, lower-case anchors, number in mono right, call button only after the hero field leaves view; phone: logo, call icon, burger · footer: light, 2px graphite rule, logo, anchors, future pages, contacts · imagery: none (client logo only, two client-photo slots) · signature: номер на жовтому полі · surface: absolute
+ * axes: light/grotesk/chromatic-yellow · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4 · weakest: execution of the catalog density, answered with collapsible groups on the phone and a sticky call column on desktop */
+/* Hallmark · waive 7b · stamp says surface: absolute, contrast 17.2:1 passes · white paper is the client's brand ground (C-023, concept.md 8.5) */
+/* Hallmark · waive 79 · the band under the lede is the brand field with the phone (y 407 to 672 at 1440) · the signature field is the hero's visual and fills that band */
+/* Hallmark · waive 44c · hero paints 120 to 672px of 900 at 1440 and the situations index starts right under it · the hero is a ledge: headline over the full-width signature field, no visual to centre, the next section is meant to peek into the fold */
+/* Hallmark · waive 23 · stamp declares posture committed and signature: номер на жовтому полі · the yellow field is the signature and the only booking action, one field per screen */
+/* Hallmark · answered F4 · one filled recipe (yellow); outlined secondary and the phone bar reuse it · F19 · three weights: 400, 500, 700 (600 removed) · F20 · brand list is fluid text, orphan depends on width */
+/* Hallmark · waive 39b · buttons 56px tall, concept.md 8.13 · the concept fixes one 56px button for the whole site and 48px+ touch targets for a phone-first call action */
+/* Hallmark · waive 81 · two labelled client-photo slots, concept.md 8.6 · client has no photos (C-014, R-014); stock images are forbidden by the studio demo rules */
+/* Hallmark · waive 69 · phone number in hero, catalog aside, contacts and chrome · category anatomy book: the call is the only booking channel (C-026) and must sit beside the menu and at the close */
+/* Fonts: Fixel Display / Fixel Text — MacPaw, SIL OFL 1.1 (public/fonts/OFL.txt); IBM Plex Mono — @fontsource, SIL OFL 1.1 (public/fonts/OFL-IBM-Plex-Mono.txt). */
+@font-face {
+  font-family: "Fixel Display";
+  src: url("/fonts/FixelDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel Text";
+  src: url("/fonts/FixelText-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel Text";
+  src: url("/fonts/FixelText-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* colour — concept.md 8.5 */
+  --color-bg: #FFFFFF;
+  --color-text: #1A1B1D;
+  --color-accent: #FEDE00;
+  --color-accent-hover: #E9CB00;
+  --color-accent-ink: #1A1B1D;
+  --color-concrete: #F0F1F2;
+  --color-muted: #55595F;
+  --color-field-border: #7A7F86;
+  --color-dark: #1A1B1D;
+  --color-on-dark: #FFFFFF;
+  --color-on-dark-muted: #B4B8BD;
+  --color-error: #B3261E;
+  --color-line: rgb(26 27 29 / 0.15);
+  --color-line-on-dark: rgb(255 255 255 / 0.2);
+  --color-focus: #1A1B1D;
+  --color-focus-on-dark: #FEDE00;
+
+  /* type — concept.md 8.4 */
+  --font-display: "Fixel Display", "Arial", sans-serif;
+  --font-body: "Fixel Text", "Arial", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+  --text-signature: clamp(1.875rem, 0.9rem + 5.2vw, 5.5rem);   /* 30 → 88 */
+  --text-hero: clamp(2.25rem, 1.4rem + 3.4vw, 4rem);            /* 36 → 64 */
+  --text-section: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);       /* 28 → 40 */
+  --text-index: clamp(1.25rem, 0.8rem + 1.9vw, 2.25rem);        /* 20 → 36, symptom rows */
+  --text-head: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);          /* 20 → 24 */
+  --text-body: clamp(1rem, 0.96rem + 0.12vw, 1.0625rem);        /* 16 → 17 */
+  --text-small: clamp(0.875rem, 0.84rem + 0.12vw, 0.9375rem);   /* 14 → 15 */
+  --leading-tight: 1.08;
+  --leading-body: 1.55;
+  --tracking-head: -0.02em;
+
+  /* space — 8px step, concept.md 8.3 */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-section: clamp(72px, 4.5rem + 3.5vw, 128px);
+  --space: 16px;                 /* container gutter */
+  --container: 1240px;
+  --header-h: 64px;
+  --control-h: 56px;
+  --touch: 48px;
+  --rule: 1px;
+  --rule-strong: 2px;
+  --rule-route: 4px;
+
+  --radius: 0;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 600ms;
+  --dur-fast: 160ms;
+  --dur-panel: 240ms;
+  --z-header: 30;
+  --z-bar: 40;
+  --z-menu: 50;
+}
+@media (min-width: 768px) {
+  :root { --space: 32px; }
+}
+@media (min-width: 1280px) {
+  :root { --space: 48px; --header-h: 80px; }
+}
